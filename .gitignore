@@ -1,0 +1,6 @@
+.env
+*.log
+__pycache__/
+*.pyc
+davis_env/
+Davis_PWS/
