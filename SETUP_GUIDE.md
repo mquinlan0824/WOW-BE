@@ -7,21 +7,21 @@ This Python script automatically uploads your weather data from WeatherLink to t
 - **Mac mini** (or any Mac)
 - **Python 3** installed (check with `python3 --version`)
 - **WeatherLink Live** connected to your Davis Vantage Vue
-- **WeatherLink Pro subscription** (you already have this)
-- **WOW-BE account** with registered station (you already have this)
+- **WeatherLink Pro subscription**
+- **WOW-BE account** with registered station
 
 ## Step 1: Get Your Credentials
 
 ### WeatherLink API Credentials
 
-You need your WeatherLink API credentials. From your earlier screenshot, you have:
+You need your WeatherLink API credentials. You need:
 
 1. Log into your WeatherLink account
 2. Go to **Account Information** (Settings)
 3. Look for **API Token v1** and **API Key v2** section
 4. You need:
-   - **API Key v2**: `your_api_key_here` (from your screenshot)
-   - **API Secret**: `your_api_secret_here` (from your screenshot)
+   - **API Key v2**: `your_api_key_here`
+   - **API Secret**: `your_api_secret_here`
    - **Station ID**: Find this in WeatherLink (usually a 6-digit number)
 
 ### WOW-BE Credentials
