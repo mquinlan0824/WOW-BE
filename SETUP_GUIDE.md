@@ -20,15 +20,15 @@ You need your WeatherLink API credentials. From your earlier screenshot, you hav
 2. Go to **Account Information** (Settings)
 3. Look for **API Token v1** and **API Key v2** section
 4. You need:
-   - **API Key v2**: `bvzmlbyg4pxaydig0yap8a4kdtptw42n` (from your screenshot)
-   - **API Secret**: `alge5t4bhaviskirm2kesqwyxoadjhv` (from your screenshot)
+   - **API Key v2**: `your_api_key_here` (from your screenshot)
+   - **API Secret**: `your_api_secret_here` (from your screenshot)
    - **Station ID**: Find this in WeatherLink (usually a 6-digit number)
 
 ### WOW-BE Credentials
 
 From your registration, you have:
-- **Station ID**: `45720f67`
-- **Authentication Key**: `082468`
+- **Station ID**: `your_wowbe_station_id`
+- **Authentication Key**: `your_wowbe_auth_key`
 
 ## Step 2: Install Python Dependencies
 
@@ -95,7 +95,7 @@ tail -f ~/Library/Logs/WOW-BE/wowbe_uploader.log
 You should see entries like:
 ```
 2026-05-05 10:15:30,123 - INFO - Starting WeatherLink to WOW-BE uploader
-2026-05-05 10:15:30,234 - INFO - Loaded credentials for WOW-BE station: 45720f67
+2026-05-05 10:15:30,234 - INFO - Loaded credentials for WOW-BE station: your_wowbe_station_id
 2026-05-05 10:15:30,345 - INFO - Fetching data from WeatherLink...
 2026-05-05 10:15:31,456 - INFO - Formatting data for WOW-BE...
 2026-05-05 10:15:31,567 - INFO - Sending data to WOW-BE...

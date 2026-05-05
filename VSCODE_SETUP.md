@@ -70,11 +70,11 @@ This installs `requests` and `python-dotenv` in your virtual environment.
 
    You should see:
    ```
-   WEATHERLINK_API_KEY=bvzmlbyg4pxaydig0yap8a4kdtptw42n
-   WEATHERLINK_API_SECRET=alge5t4bhaviskirm2kesqwyxoadjhv
+   WEATHERLINK_API_KEY=your_api_key_here
+   WEATHERLINK_API_SECRET=your_api_secret_here
    WEATHERLINK_STATION_ID=001D0AC026B4
-   WOWBE_STATION_ID=45720f67
-   WOWBE_AUTH_KEY=082468
+   WOWBE_STATION_ID=your_wowbe_station_id
+   WOWBE_AUTH_KEY=your_wowbe_auth_key
    ```
 
    Save with **Ctrl+O**, **Enter**, **Ctrl+X**
@@ -92,7 +92,7 @@ python weatherlink_to_wowbe.py
 You should see output like:
 ```
 2026-05-05 10:15:30,123 - INFO - Starting WeatherLink to WOW-BE uploader
-2026-05-05 10:15:30,234 - INFO - Loaded credentials for WOW-BE station: 45720f67
+2026-05-05 10:15:30,234 - INFO - Loaded credentials for WOW-BE station: your_wowbe_station_id
 2026-05-05 10:15:30,345 - INFO - Fetching data from WeatherLink...
 2026-05-05 10:15:31,456 - INFO - Formatting data for WOW-BE...
 2026-05-05 10:15:31,567 - INFO - Sending data to WOW-BE...
