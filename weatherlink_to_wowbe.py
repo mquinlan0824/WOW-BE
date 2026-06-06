@@ -10,6 +10,8 @@ import json
 import os
 import sys
 import logging
+import smtplib
+from email.mime.text import MIMEText
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
@@ -35,6 +37,48 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
+ALERT_EMAIL = "mquinlan0824@gmail.com"
+FAILURE_FLAG = LOG_DIR / ".failure_notified"
+
+
+def send_alert_email(subject, body):
+    gmail_user = os.getenv('GMAIL_USER')
+    gmail_password = os.getenv('GMAIL_APP_PASSWORD')
+    if not gmail_user or not gmail_password:
+        logger.warning("Gmail credentials not configured, skipping email alert")
+        return
+    try:
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = gmail_user
+        msg['To'] = ALERT_EMAIL
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(gmail_user, gmail_password)
+            smtp.send_message(msg)
+        logger.info("Alert email sent")
+    except Exception as e:
+        logger.error(f"Failed to send alert email: {e}")
+
+
+def notify_failure(reason):
+    if FAILURE_FLAG.exists():
+        return
+    FAILURE_FLAG.touch()
+    send_alert_email(
+        "WOW-BE uploader failed",
+        f"Weather uploader failed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\nReason: {reason}\n\nCheck logs: {LOG_FILE}"
+    )
+
+
+def notify_recovery():
+    if not FAILURE_FLAG.exists():
+        return
+    FAILURE_FLAG.unlink()
+    send_alert_email(
+        "WOW-BE uploader recovered",
+        f"Weather uploader recovered at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    )
 
 
 def load_credentials():
@@ -125,6 +169,10 @@ def format_for_wowbe(wu_data):
         if 'precipRate' in imperial and imperial['precipRate'] is not None:
             wowbe_data['rainin'] = imperial['precipRate']
 
+        # Daily rainfall total (in)
+        if 'precipTotal' in imperial and imperial['precipTotal'] is not None:
+            wowbe_data['dailyrainin'] = imperial['precipTotal']
+
         # Dew point (Fahrenheit)
         if 'dewpt' in imperial and imperial['dewpt'] is not None:
             wowbe_data['dewptf'] = imperial['dewpt']
@@ -200,16 +248,22 @@ def main():
 
         if wowbe_data:
             logger.info("Sending data to WOW-BE...")
-            send_to_wowbe(config, wowbe_data)
+            success = send_to_wowbe(config, wowbe_data)
+            if not success:
+                notify_failure("Failed to send data to WOW-BE")
+                return 1
         else:
+            notify_failure("Failed to extract data from Weather Underground")
             logger.error("Failed to format data for WOW-BE")
             return 1
 
+        notify_recovery()
         logger.info("Upload cycle completed successfully")
         return 0
 
     except Exception as e:
         logger.error(f"Unexpected error: {e}", exc_info=True)
+        notify_failure(str(e))
         return 1
     finally:
         logger.info("=" * 60)
